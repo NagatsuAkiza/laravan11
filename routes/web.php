@@ -1,11 +1,11 @@
 <?php
 
 use App\Models\Post;
-use Illuminate\Support\Arr;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('home', ["title" => "Homepage"]);
+    return view('home', ["title" => "Homepage", "posts" => Post::all()]);
 });
 
 Route::get('/about', function () {
@@ -22,8 +22,8 @@ Route::get('/posts', function () {
     ]);
 });
 
-Route::get('/posts/{slug}', function ($slug) {
-    $post = Post::find($slug);
+Route::get('/posts/{post:slug}', function (Post $post) {
+    // $post = Post::find($post);
     return view('post', ['title' => 'Sigle post', 'post' => $post]);
 });
 
@@ -37,4 +37,8 @@ Route::get('/contact', function () {
 
 Route::get('/product', function () {
     return view('product', ["title" => "Product"]);
+});
+
+Route::get('/authors/{user}', function (User $user) {
+    return view('posts', ['title' => 'Articles By ' . $user->name, 'posts' => $user->posts]);
 });
